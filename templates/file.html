@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+{% extends 'flatpages/default.html' %}
+{% load static %}
+<!---->
+
+{% block title %}
+Ads
+{% endblock title %}
+
+{% block content %}
+
+
+
+<hr>
+Колечество повторений слова {{ d }} в тексте: {{count}}
+<hr>
+
+
+<p><a href="{% url 'start' %}"><button>На главную</button></a></p>
+<p><a href="{% url 'word_one' pk=number %}"><button>Искать в этом же файле</button></a></p>
+{% endblock content %}

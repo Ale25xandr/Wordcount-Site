@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+{% extends 'flatpages/default.html' %}
+{% load static %}
+<!---->
+
+{% block title %}
+Ads
+{% endblock title %}
+
+{% block content %}
+
+
+
+<form action="" method="post" >
+            {% csrf_token %}
+            {{form.as_table}}
+           <input  type="submit"  value="Искать"/>
+        </form>
+
+{% endblock content %}
