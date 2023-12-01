@@ -13,11 +13,22 @@ Ads
 
 
 <hr>
-Количество повторений слова {{ d }} в тексте: {{count}}
+<table>
+  <tr>
+  <td>Слово</td>
+  <td>Количество повторений</td>
+  </tr>
+  {% for word in w %}
+  <tr>
+  <td>{{word.word}}</td>
+  <td>{{word.count}}</td>
+  </tr>
+  {% endfor %}
+</table>
 <hr>
 
 
 <p><a href="{% url 'start' %}"><button>На главную</button></a></p>
 <p><a href="{% url 'word_one' pk=number %}"><button>Искать в этом же файле</button></a></p>
-<p><a href="{% url 'history' pk=number %}"><button>История поиска в этом файле</button></a></p>
+<p><a href="{% url 'del' pk=number %}"><button>Очистить историю поиска</button></a></p>
 {% endblock content %}

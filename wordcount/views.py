@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from .forms import *
 
@@ -10,6 +10,13 @@ def WordView(request, pk):
     if request.method == 'POST':
         word = request.POST['word']
         file = File.objects.get(id=pk)
+        w = Words.objects.filter(word=word, file=file)
+        print(w)
+        if w.exists():
+            count = w.values('count')
+            return render(request, 'file.html', context={'d': word,
+                                                         'count': count[0]['count'],
+                                                         'number': pk})
         with open(file.file.path, "r", encoding='utf-8') as f:
             d = word
             t = list(f.readlines())
@@ -22,9 +29,11 @@ def WordView(request, pk):
                         r = tt[i].split(' ')
                         if d.casefold() in r:
                             count += 1
+            Words.objects.create(word=word, count=count, file=file)
     return render(request, 'file.html', context={'d': word,
                                                  'count': count,
-                                                 'number': pk})
+                                                 'number': pk,
+                                                 'word': d})
 
 
 def HomePage(request):
@@ -48,10 +57,30 @@ def HomePage(request):
                             r = tt[i].split(' ')
                             if d.casefold() in r:
                                 count += 1
-                number = File.objects.get(file=obj.file).id
+                f = File.objects.get(file=obj.file)
+                number = f.id
+                Words.objects.create(word=word, count=count, file=f)
         return render(request, 'file.html', context={'d': word,
                                                      'count': count,
                                                      'number': number})
     if request.method == "GET":
         form = StartForm(request.POST or None, request.FILES or None)
         return render(request, template_name='start.html', context={'form': form})
+
+
+def HistoryView(request, pk):
+    if request.method == "GET":
+        file = File.objects.get(id=pk)
+        words = Words.objects.filter(file=file)
+        return render(request, 'history.html', context={'number': pk,
+                                                        'w': words.distinct()})
+
+
+def TemplateDelete(request, pk):
+    return render(request, 'delete.html', context={'number': pk})
+
+
+def DeleteHistory(request, pk):
+    words = Words.objects.filter(file=pk)
+    words.delete()
+    return redirect('history', pk=pk)

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+
+{% extends 'flatpages/default.html' %}
+{% load static %}
+<!---->
+
+{% block title %}
+Ads
+{% endblock title %}
+
+{% block content %}
+
+
+
+<hr>
+Действительно очистить историю поиска в данном файле?
+<hr>
+
+
+<p><a href="{% url 'delete' pk=number %}"><button>Да</button></a></p>
+<p><a href="{% url 'history' pk=number %}"><button>Нет</button></a></p>
+{% endblock content %}
